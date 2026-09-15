@@ -156,7 +156,11 @@
       font-weight: 700;
     }
 
-    .round-inputs input { margin-top: .3rem; }
+    .round-inputs input {
+      margin-top: .3rem;
+      background: rgba(255, 255, 255, .05);
+      color: var(--text);
+   }
 
     .timer {
       display: flex;
@@ -314,7 +318,7 @@
           <textarea id="notes" placeholder="Form notes, energy, pain, adjustments, etc."></textarea>
         </div>
         <label style="display:flex; gap:.55rem; align-items:center; margin-top:.85rem; color:var(--muted);">
-          <input id="completed" type="checkbox" style="width:auto;" checked />
+          <input id="completed" type="checkbox" style="width:auto;" />
           Workout completed
         </label>
         <div id="suggestion" class="note" style="margin-top:.9rem;">Enter reps and RPE to receive a progression suggestion.</div>
@@ -479,7 +483,7 @@
       $("date").value = today();
       $("week").value = next.week;
       $("session").value = next.session;
-      $("completed").checked = true;
+      $("completed").checked = false;
       $("rest1").value = "";
       $("rest2").value = "";
       $("duration").value = "";
@@ -587,7 +591,7 @@
       ["date", "week", "session", "weight", "rest1", "rest2", "duration", "rpe", "notes"].forEach(id => {
         if (draft[id] !== undefined) $(id).value = draft[id];
       });
-      $("completed").checked = draft.completed !== false;
+      $("completed").checked = draft.completed === true;
 
       EXERCISES.forEach(exercise => {
         [1, 2, 3].forEach((round, index) => {
