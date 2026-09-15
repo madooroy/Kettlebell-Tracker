@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101827">
+  <title>Kettlebell Workout Tracker</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --ink: #18212f;
+      --muted: #667085;
+      --line: #d7dee9;
+      --accent: #146c43;
+      --accent-dark: #0d4e30;
+      --blue: #145da0;
+      --warn: #a15c00;
+      --danger: #b42318;
+      --shadow: 0 8px 22px rgba(16, 24, 40, .08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      background: #101827;
+      color: white;
+      padding: 22px 16px 18px;
+    }
+
+    header > div, main {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    h1 { margin: 0; font-size: 1.45rem; }
+    h2 { margin: 0 0 14px; font-size: 1.15rem; }
+    h3 { margin: 0; font-size: 1rem; }
+    p { line-height: 1.5; }
+    .subtle { margin: 5px 0 0; color: #c7d2e1; font-size: .9rem; }
+
+    main { padding: 16px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    label {
+      display: block;
+      font-size: .82rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #344054;
+    }
+
+    input, select, textarea, button {
+      font: inherit;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid #bfc9d8;
+      border-radius: 9px;
+      padding: 10px;
+      min-height: 42px;
+      background: white;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: 3px solid rgba(20, 93, 160, .18);
+      border-color: var(--blue);
+    }
+
+    button {
+      border: 0;
+      border-radius: 9px;
+      padding: 11px 14px;
+      min-height: 42px;
+      cursor: pointer;
+      font-weight: 800;
+      background: #e8edf5;
+      color: #18212f;
+    }
+
+    button:hover { filter: brightness(.97); }
+    button.primary { background: var(--accent); color: white; }
+    button.primary:hover { background: var(--accent-dark); }
+    button.blue { background: var(--blue); color: white; }
+    button.danger { background: #fbe9e7; color: var(--danger); }
+    button.small { min-height: 34px; padding: 7px 10px; font-size: .85rem; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 14px;
+    }
+
+    .round {
+      border: 2px solid var(--line);
+      border-radius: 14px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .round.active { border-color: var(--accent); }
+
+    .round-head {
+      padding: 13px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background: #f8fafc;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .round-body { padding: 14px; }
+    .round:not(.active) .round-body { display: none; }
+
+    .exercise {
+      display: grid;
+      grid-template-columns: minmax(130px, 1fr) 105px;
+      gap: 12px;
+      align-items: end;
+      padding: 12px 0;
+      border-bottom: 1px solid #edf0f4;
+    }
+
+    .exercise:last-child { border-bottom: 0; }
+
+    .exercise-name { font-weight: 800; }
+    .target { color: var(--muted); font-size: .84rem; margin-top: 3px; }
+
+    .bilateral {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .bilateral label { margin-bottom: 4px; font-size: .73rem; }
+
+    .timer {
+      text-align: center;
+      padding: 18px;
+      border: 1px dashed #9db6aa;
+      border-radius: 12px;
+      background: #f1faf4;
+      margin-top: 12px;
+    }
+
+    .timer-number {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--accent-dark);
+      letter-spacing: .04em;
+    }
+
+    .hidden { display: none !important; }
+
+    .status {
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: #edf7f0;
+      color: var(--accent-dark);
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .history-item {
+      border-top: 1px solid var(--line);
+      padding: 13px 0;
+    }
+
+    .history-item:first-child { border-top: 0; padding-top: 0; }
+
+    .history-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 10px;
+    }
+
+    .history-meta { color: var(--muted); font-size: .88rem; margin-top: 4px; }
+    .history-details { color: #344054; font-size: .9rem; margin: 9px 0; }
+    .history-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .82rem;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .grid, .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 480px) {
+      .exercise { grid-template-columns: 1fr; gap: 7px; }
+      .grid, .summary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Kettlebell Workout Tracker</h1>
+      <p class="subtle">3 rounds · log reps, rest, effort, and progression</p>
+    </div>
+  </header>
+
+  <main>
+    <div id="status" class="status hidden"></div>
+
+    <section class="card">
+      <h2>Workout setup</h2>
+
+      <div class="grid">
+        <div>
+          <label for="date">Date</label>
+          <input id="date" type="date">
+        </div>
+        <div>
+          <label for="week">Week</label>
+          <input id="week" type="number" min="1" step="1">
+        </div>
+        <div>
+          <label for="session">Session</label>
+          <input id="session" type="number" min="1" step="1">
+        </div>
+        <div>
+          <label for="weight">Kettlebell (kg)</label>
+          <input id="weight" type="number" min="0" step="0.5" placeholder="e.g. 16">
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="startWorkout" class="primary" type="button">Start workout</button>
+        <button id="fillTargets" type="button">Fill all targets</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Rounds</h2>
+      <p class="footer-note">Record completed reps. For unilateral exercises, enter left and right separately.</p>
+
+      <div id="rounds"></div>
+
+      <div id="restTimer" class="timer hidden">
+        <div id="restTitle"><strong>Rest timer</strong></div>
+        <div id="timerNumber" class="timer-number">01:15</div>
+        <div class="actions" style="justify-content:center">
+          <button class="small" type="button" data-rest="60">60 sec</button>
+          <button class="small" type="button" data-rest="75">75 sec</button>
+          <button class="small" type="button" data-rest="90">90 sec</button>
+          <button id="stopTimer" class="small danger" type="button">Stop timer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Session summary</h2>
+
+      <div class="summary-grid">
+        <div>
+          <label for="rest1">Rest after round 1 (sec)</label>
+          <input id="rest1" type="number" min="0" step="1">
+        </div>
+        <div>
+          <label for="rest2">Rest after round 2 (sec)</label>
+          <input id="rest2" type="number" min="0" step="1">
+        </div>
+        <div>
+          <label for="workoutTime">Workout time (min)</label>
+          <input id="workoutTime" type="number" min="0" step="1">
+        </div>
+        <div>
+          <label for="rpe">RPE (1–10)</label>
+          <input id="rpe" type="number" min="1" max="10" step="1">
+        </div>
+        <div>
+          <label for="completed">Completed?</label>
+          <select id="completed">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div>
+          <label for="progression">Progression decision</label>
+          <select id="progression">
+            <option value="">Choose after workout</option>
+            <option value="Maintain weight">Maintain weight</option>
+            <option value="Increase weight">Increase weight</option>
+            <option value="Repeat session">Repeat session</option>
+            <option value="Reduce load">Reduce load</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px">
+        <label for="notes">Notes</label>
+        <textarea id="notes" placeholder="Form notes, discomfort, energy, changes for next time…"></textarea>
+      </div>
+
+      <div class="actions">
+        <button id="suggestProgression" class="blue" type="button">Suggest progression</button>
+        <button id="saveWorkout" class="primary" type="button">Save workout</button>
+        <button id="newWorkout" type="button">New workout</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Workout history</h2>
+      <div class="actions" style="margin-top:0; margin-bottom:12px">
+        <button id="exportCsv" type="button">Export CSV</button>
+        <button id="backupJson" type="button">Download backup</button>
+        <label for="importJson" class="small" style="margin:0; display:inline-flex; align-items:center; cursor:pointer; background:#e8edf5; border-radius:9px; padding:7px 10px;">
+          Import backup
+        </label>
+        <input id="importJson" type="file" accept=".json,application/json" class="hidden">
+        <button id="clearHistory" class="danger" type="button">Delete all saved data</button>
+      </div>
+      <div id="history"></div>
+      <p class="footer-note">Your entries are stored in this browser. Download a backup periodically if you want to move devices or preserve your log.</p>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "kettlebell-workout-history-v1";
+    const DRAFT_KEY = "kettlebell-workout-draft-v1";
+
+    const exercises = [
+      { key: "deadlift", name: "Deadlift", target: 12, label: "Reps" },
+      { key: "gobletSquat", name: "Goblet squat", target: 10, label: "Reps" },
+      { key: "twoHandSwing", name: "Two-hand swing", target: 15, label: "Reps" },
+      { key: "overheadPress", name: "Overhead press", target: 8, bilateral: true },
+      { key: "bentOverRow", name: "Bent-over row", target: 10, bilateral: true }
+    ];
+
+    let activeRound = 1;
+    let workoutStartedAt = null;
+    let timerInterval = null;
+    let timerEnd = null;
+    let restRound = null;
+
+    const $ = (id) => document.getElementById(id);
+
+    function todayString() {
+      const today = new Date();
+      const offset = today.getTimezoneOffset();
+      return new Date(today.getTime() - offset * 60000).toISOString().slice(0, 10);
+    }
+
+    function getHistory() {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+    }
+
+    function saveHistory(history) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    }
+
+    function showStatus(message) {
+      const status = $("status");
+      status.textContent = message;
+      status.classList.remove("hidden");
+      setTimeout(() => status.classList.add("hidden"), 3500);
+    }
+
+    function nextWeekAndSession() {
+      const history = getHistory();
+      if (!history.length) return { week: 1, session: 1 };
+
+      const latest = [...history].sort((a, b) => {
+        if (a.week !== b.week) return b.week - a.week;
+        return b.session - a.session;
+      })[0];
+
+      return { week: Number(latest.week) + 1, session: 1 };
+    }
+
+    function renderRounds() {
+      $("rounds").innerHTML = [1, 2, 3].map(round => `
+        <div class="round ${round === activeRound ? "active" : ""}" id="round-${round}">
+          <div class="round-head">
+            <div>
+              <h3>Round ${round}</h3>
+              <div class="target">Complete each exercise, then finish the round.</div>
+            </div>
+            <button class="small" type="button" onclick="openRound(${round})">
+              ${round === activeRound ? "Active" : "Open"}
+            </button>
+          </div>
+          <div class="round-body">
+            ${exercises.map(exercise => exercise.bilateral
+              ? `
+                <div class="exercise">
+                  <div>
+                    <div class="exercise-name">${exercise.name}</div>
+                    <div class="target">Target: ${exercise.target} reps per arm</div>
+                  </div>
+                  <div class="bilateral">
+                    <div>
+                      <label for="${exercise.key}-left-${round}">Left</label>
+                      <input id="${exercise.key}-left-${round}" type="number" min="0" step="1" inputmode="numeric">
+                    </div>
+                    <div>
+                      <label for="${exercise.key}-right-${round}">Right</label>
+                      <input id="${exercise.key}-right-${round}" type="number" min="0" step="1" inputmode="numeric">
+                    </div>
+                  </div>
+                </div>
+              `
+              : `
+                <div class="exercise">
+                  <div>
+                    <div class="exercise-name">${exercise.name}</div>
+                    <div class="target">Target: ${exercise.target} reps</div>
+                  </div>
+                  <div>
+                    <label for="${exercise.key}-${round}">${exercise.label}</label>
+                    <input id="${exercise.key}-${round}" type="number" min="0" step="1" inputmode="numeric">
+                  </div>
+                </div>
+              `
+            ).join("")}
+            <div class="actions">
+              <button class="small" type="button" onclick="fillRoundTargets(${round})">Fill targets</button>
+              <button class="primary" type="button" onclick="finishRound(${round})">
+                ${round === 3 ? "Finish workout" : "Finish round ${round}"}
+              </button>
+            </div>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    window.openRound = function(round) {
+      activeRound = round;
+      renderRounds();
+    };
+
+    window.fillRoundTargets = function(round) {
+      exercises.forEach(exercise => {
+        if (exercise.bilateral) {
+          $(`${exercise.key}-left-${round}`).value = exercise.target;
+          $(`${exercise.key}-right-${round}`).value = exercise.target;
+        } else {
+          $(`${exercise.key}-${round}`).value = exercise.target;
+        }
+      });
+      saveDraft();
+    };
+
+    window.finishRound = function(round) {
+      saveDraft();
+
+      if (round < 3) {
+        activeRound = round + 1;
+        renderRounds();
+        restRound = round;
+        startTimer(75);
+        $("round-" + activeRound).scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        stopTimer();
+        updateWorkoutTime();
+        $("rpe").focus();
+        document.querySelector(".card:nth-of-type(3)").scrollIntoView({ behavior: "smooth", block: "start" });
+        showStatus("Rounds complete. Add your session summary and save.");
+      }
+    };
+
+    function startTimer(seconds) {
+      stopTimer(false);
+      timerEnd = Date.now() + seconds * 1000;
+      $("restTimer").classList.remove("hidden");
+      $("restTitle").innerHTML = `<strong>Rest after round ${restRound}</strong>`;
+      updateTimerDisplay();
+
+      timerInterval = setInterval(() => {
+        updateTimerDisplay();
+        if (Date.now() >= timerEnd) {
+          stopTimer(false);
+          if (restRound === 1) $("rest1").value = seconds;
+          if (restRound === 2) $("rest2").value = seconds;
+          showStatus("Rest complete. Start the next round when ready.");
+        }
+      }, 250);
+    }
+
+    function updateTimerDisplay() {
+      const remaining = Math.max(0, Math.ceil((timerEnd - Date.now()) / 1000));
+      const minutes = String(Math.floor(remaining / 60)).padStart(2, "0");
+      const seconds = String(remaining % 60).padStart(2, "0");
+      $("timerNumber").textContent = `${minutes}:${seconds}`;
+    }
+
+    function stopTimer(hide = true) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      if (hide) $("restTimer").classList.add("hidden");
+    }
+
+    function getRound(round) {
+      const data = {};
+      exercises.forEach(exercise => {
+        if (exercise.bilateral) {
+          data[exercise.key] = {
+            left: Number($(`${exercise.key}-left-${round}`).value || 0),
+            right: Number($(`${exercise.key}-right-${round}`).value || 0)
+          };
+        } else {
+          data[exercise.key] = Number($(`${exercise.key}-${round}`).value || 0);
+        }
+      });
+      return data;
+    }
+
+    function getWorkout() {
+      return {
+        id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
+        savedAt: new Date().toISOString(),
+        date: $("date").value,
+        week: Number($("week").value),
+        session: Number($("session").value),
+        kettlebellKg: Number($("weight").value || 0),
+        rounds: [getRound(1), getRound(2), getRound(3)],
+        restAfterRound1Sec: Number($("rest1").value || 0),
+        restAfterRound2Sec: Number($("rest2").value || 0),
+        workoutTimeMin: Number($("workoutTime").value || 0),
+        rpe: Number($("rpe").value || 0),
+        completed: $("completed").value === "yes",
+        progressionDecision: $("progression").value,
+        notes: $("notes").value.trim()
+      };
+    }
+
+    function allTargetsMet(workout) {
+      return workout.rounds.every(round =>
+        exercises.every(exercise => {
+          if (exercise.bilateral) {
+            return round[exercise.key].left >= exercise.target &&
+                   round[exercise.key].right >= exercise.target;
+          }
+          return round[exercise.key] >= exercise.target;
+        })
+      );
+    }
+
+    function suggestProgression() {
+      const workout = getWorkout();
+      const metTargets = allTargetsMet(workout);
+
+      let suggestion;
+      if (!workout.completed || !metTargets) {
+        suggestion = "Repeat session";
+      } else if (workout.rpe > 0 && workout.rpe <= 7) {
+        suggestion = "Increase weight";
+      } else if (workout.rpe >= 8) {
+        suggestion = "Maintain weight";
+      } else {
+        suggestion = "Repeat session";
+      }
+
+      $("progression").value = suggestion;
+      showStatus(`Suggested progression: ${suggestion}.`);
+    }
+
+    function updateWorkoutTime() {
+      if (!workoutStartedAt) return;
+      const minutes = Math.max(1, Math.round((Date.now() - workoutStartedAt) / 60000));
+      $("workoutTime").value = minutes;
+    }
+
+    function fillAllTargets() {
+      [1, 2, 3].forEach(fillRoundTargets);
+      showStatus("All prescribed targets filled.");
+    }
+
+    function saveWorkout() {
+      updateWorkoutTime();
+      const workout = getWorkout();
+
+      if (!workout.date || !workout.week || !workout.session) {
+        showStatus("Add a date, week, and session before saving.");
+        return;
+      }
+
+      const history = getHistory();
+      history.push(workout);
+      history.sort((a, b) => new Date(b.date) - new Date(a.date));
+      saveHistory(history);
+      localStorage.removeItem(DRAFT_KEY);
+
+      renderHistory();
+      showStatus("Workout saved.");
+      newWorkout();
+    }
+
+    function sessionDetails(workout) {
+      const targetsMet = allTargetsMet(workout) ? "all targets met" : "some targets missed";
+      const rpe = workout.rpe ? `RPE ${workout.rpe}` : "no RPE";
+      const duration = workout.workoutTimeMin ? `${workout.workoutTimeMin} min` : "no duration";
+      return `${workout.kettlebellKg || "—"} kg · ${duration} · ${rpe} · ${targetsMet}`;
+    }
+
+    function renderHistory() {
+      const history = getHistory();
+      const container = $("history");
+
+      if (!history.length) {
+        container.innerHTML = `<p class="footer-note">No saved workouts yet.</p>`;
+        return;
+      }
+
+      container.innerHTML = history.map(workout => `
+        <article class="history-item">
+          <div class="history-top">
+            <div>
+              <strong>Week ${workout.week}, Session ${workout.session}</strong>
+              <div class="history-meta">${workout.date} · ${workout.completed ? "Completed" : "Not completed"}</div>
+            </div>
+            <strong>${workout.progressionDecision || "No decision"}</strong>
+          </div>
+          <div class="history-details">${sessionDetails(workout)}${workout.notes ? `<br><em>${escapeHtml(workout.notes)}</em>` : ""}</div>
+          <div class="history-actions">
+            <button class="small" type="button" onclick="loadWorkout('${workout.id}')">Load</button>
+            <button class="small danger" type="button" onclick="deleteWorkout('${workout.id}')">Delete</button>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    window.deleteWorkout = function(id) {
+      const history = getHistory().filter(workout => workout.id !== id);
+      saveHistory(history);
+      renderHistory();
+      showStatus("Saved workout deleted.");
+    };
+
+    window.loadWorkout = function(id) {
+      const workout = getHistory().find(item => item.id === id);
+      if (!workout) return;
+
+      $("date").value = workout.date;
+      $("week").value = workout.week;
+      $("session").value = workout.session;
+      $("weight").value = workout.kettlebellKg || "";
+      $("rest1").value = workout.restAfterRound1Sec || "";
+      $("rest2").value = workout.restAfterRound2Sec || "";
+      $("workoutTime").value = workout.workoutTimeMin || "";
+      $("rpe").value = workout.rpe || "";
+      $("completed").value = workout.completed ? "yes" : "no";
+      $("progression").value = workout.progressionDecision || "";
+      $("notes").value = workout.notes || "";
+
+      activeRound = 1;
+      renderRounds();
+
+      workout.rounds.forEach((roundData, index) => {
+        const round = index + 1;
+        exercises.forEach(exercise => {
+          if (exercise.bilateral) {
+            $(`${exercise.key}-left-${round}`).value = roundData[exercise.key]?.left || "";
+            $(`${exercise.key}-right-${round}`).value = roundData[exercise.key]?.right || "";
+          } else {
+            $(`${exercise.key}-${round}`).value = roundData[exercise.key] || "";
+          }
+        });
+      });
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      showStatus("Workout loaded. Saving will create a new copy.");
+    };
+
+    function newWorkout() {
+      const next = nextWeekAndSession();
+      document.querySelectorAll("input, textarea").forEach(element => {
+        if (!["date", "week", "session"].includes(element.id)) element.value = "";
+      });
+
+      $("date").value = todayString();
+      $("week").value = next.week;
+      $("session").value = next.session;
+      $("completed").value = "yes";
+      $("progression").value = "";
+      activeRound = 1;
+      workoutStartedAt = null;
+      stopTimer();
+      renderRounds();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function saveDraft() {
+      const draft = getWorkout();
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+    }
+
+    function loadDraft() {
+      const draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || "null");
+      if (!draft) return false;
+
+      $("date").value = draft.date || todayString();
+      $("week").value = draft.week || 1;
+      $("session").value = draft.session || 1;
+      $("weight").value = draft.kettlebellKg || "";
+      $("rest1").value = draft.restAfterRound1Sec || "";
+      $("rest2").value = draft.restAfterRound2Sec || "";
+      $("workoutTime").value = draft.workoutTimeMin || "";
+      $("rpe").value = draft.rpe || "";
+      $("completed").value = draft.completed ? "yes" : "no";
+      $("progression").value = draft.progressionDecision || "";
+      $("notes").value = draft.notes || "";
+
+      renderRounds();
+
+      draft.rounds?.forEach((roundData, index) => {
+        const round = index + 1;
+        exercises.forEach(exercise => {
+          if (exercise.bilateral) {
+            $(`${exercise.key}-left-${round}`).value = roundData[exercise.key]?.left || "";
+            $(`${exercise.key}-right-${round}`).value = roundData[exercise.key]?.right || "";
+          } else {
+            $(`${exercise.key}-${round}`).value = roundData[exercise.key] || "";
+          }
+        });
+      });
+
+      return true;
+    }
+
+    function csvValue(value) {
+      return `"${String(value ?? "").replaceAll('"', '""')}"`;
+    }
+
+    function exportCsv() {
+      const history = getHistory();
+      if (!history.length) {
+        showStatus("No workouts are available to export.");
+        return;
+      }
+
+      const headers = [
+        "Date", "Week", "Session", "Kettlebell kg", "Completed",
+        "Workout time min", "RPE", "Rest after round 1 sec", "Rest after round 2 sec",
+        "Progression decision", "Notes"
+      ];
+
+      [1, 2, 3].forEach(round => {
+        headers.push(
+          `Round ${round} Deadlift`,
+          `Round ${round} Goblet squat`,
+          `Round ${round} Two-hand swing`,
+          `Round ${round} Overhead press left`,
+          `Round ${round} Overhead press right`,
+          `Round ${round} Bent-over row left`,
+          `Round ${round} Bent-over row right`
+        );
+      });
+
+      const rows = history.map(workout => {
+        const row = [
+          workout.date, workout.week, workout.session, workout.kettlebellKg,
+          workout.completed ? "Yes" : "No", workout.workoutTimeMin, workout.rpe,
+          workout.restAfterRound1Sec, workout.restAfterRound2Sec,
+          workout.progressionDecision, workout.notes
+        ];
+
+        workout.rounds.forEach(round => {
+          row.push(
+            round.deadlift,
+            round.gobletSquat,
+            round.twoHandSwing,
+            round.overheadPress.left,
+            round.overheadPress.right,
+            round.bentOverRow.left,
+            round.bentOverRow.right
+          );
+        });
+
+        return row.map(csvValue).join(",");
+      });
+
+      downloadFile(
+        "kettlebell-workouts.csv",
+        [headers.map(csvValue).join(","), ...rows].join("\n"),
+        "text/csv"
+      );
+    }
+
+    function backupJson() {
+      downloadFile(
+        "kettlebell-workout-backup.json",
+        JSON.stringify(getHistory(), null, 2),
+        "application/json"
+      );
+    }
+
+    function downloadFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      link.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importBackup(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const imported = JSON.parse(reader.result);
+          if (!Array.isArray(imported)) throw new Error("Invalid backup");
+
+          const existing = getHistory();
+          const merged = [...existing, ...imported].filter(
+            (workout, index, array) =>
+              array.findIndex(item => item.id === workout.id) === index
+          );
+
+          saveHistory(merged);
+          renderHistory();
+          showStatus(`${imported.length} workout(s) imported.`);
+        } catch {
+          showStatus("That file could not be imported.");
+        }
+      };
+      reader.readAsText(file);
+      event.target.value = "";
+    }
+
+    $("startWorkout").addEventListener("click", () => {
+      workoutStartedAt = Date.now();
+      showStatus("Workout timer started.");
+    });
+
+    $("fillTargets").addEventListener("click", fillAllTargets);
+    $("suggestProgression").addEventListener("click", suggestProgression);
+    $("saveWorkout").addEventListener("click", saveWorkout);
+    $("newWorkout").addEventListener("click", newWorkout);
+    $("stopTimer").addEventListener("click", () => stopTimer());
+    $("exportCsv").addEventListener("click", exportCsv);
+    $("backupJson").addEventListener("click", backupJson);
+    $("importJson").addEventListener("change", importBackup);
+
+    document.querySelectorAll("[data-rest]").forEach(button => {
+      button.addEventListener("click", () => {
+        startTimer(Number(button.dataset.rest));
+      });
+    });
+
+    $("clearHistory").addEventListener("click", () => {
+      if (confirm("Delete every saved workout from this browser? This cannot be undone.")) {
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(DRAFT_KEY);
+        renderHistory();
+        newWorkout();
+        showStatus("All saved data was deleted.");
+      }
+    });
+
+    document.addEventListener("input", (event) => {
+      if (event.target.matches("input, textarea, select")) saveDraft();
+    });
+
+    function initialize() {
+      renderHistory();
+
+      if (!loadDraft()) {
+        const next = nextWeekAndSession();
+        $("date").value = todayString();
+        $("week").value = next.week;
+        $("session").value = next.session;
+        $("completed").value = "yes";
+        renderRounds();
+      }
+    }
+
+    initialize();
+  </script>
+</body>
+</html>
