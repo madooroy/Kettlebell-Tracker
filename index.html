@@ -100,6 +100,16 @@
       max-width: 100%;
     }
 
+    /* Keep each Session Details field in a fixed, equal-width column */
+    #workout > .card:first-of-type .meta-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    /* Space below RPE to align the bottom of the Rest Timer card */
+    #rpe {
+      margin-bottom: 1.55rem;
+    }
+
     .field label {
       display: block;
       font-size: .83rem;
@@ -118,6 +128,23 @@
       padding: .68rem .72rem;
     }
 
+    /* Prevent the browser's date control from forcing a wider grid column */
+    input[type="date"] {
+      min-width: 0;
+      max-width: 100%;
+      width: 100%;
+    }
+
+    /* Keep all Session Details fields equal-width */
+    #workout > .card:first-of-type .meta-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #workout > .card:first-of-type .meta-grid .field {
+      min-width: 0;
+      overflow: hidden;
+    }
+    
     textarea { min-height: 100px; resize: vertical; }
 
     .actions {
@@ -355,7 +382,6 @@
             <label for="rpe">Session RPE (1–10)</label>
             <input id="rpe" type="number" min="1" max="10" placeholder="7" />
           </div>
-          <div class="field" aria-hidden="true"></div>
         </div>
       </div>
 
