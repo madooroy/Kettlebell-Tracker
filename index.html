@@ -80,17 +80,23 @@
       gap: .85rem;
     }
 
-    /* Session Details: two fields per row */
+    /* Session Details and workout metrics: stable two-column layout */
     .meta-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       gap: .7rem;
+      width: 100%;
     }
 
-    .meta-grid .field,
+    .meta-grid .field {
+      min-width: 0;
+      width: 100%;
+    }
+
     .meta-grid input,
     .meta-grid select {
       min-width: 0;
+      width: 100%;
       max-width: 100%;
     }
 
@@ -179,7 +185,6 @@
       align-items: center;
     }
 
-    /* Countdown display: row 1 */
     .timer-readout {
       grid-column: 1 / -1;
       text-align: center;
@@ -191,12 +196,10 @@
       white-space: nowrap;
     }
 
-    /* Presets: row 2, three equal buttons */
     .timer .preset {
       width: 100%;
     }
 
-    /* Timer actions: row 3, two equal buttons */
     .timer-actions {
       grid-column: 1 / -1;
       display: grid;
@@ -262,13 +265,8 @@
     .hidden { display: none !important; }
 
     @media (min-width: 740px) {
-      /* Keep Session Details in a 2 × 2 arrangement */
-      .meta-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
       .rounds {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .exercise:last-child {
