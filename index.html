@@ -116,6 +116,32 @@
       grid-column: 1;
     }
 
+    /* Rest Timer session metrics: two columns, two rows */
+    #rest-timer-card .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .7rem;
+      width: 100%;
+      min-width: 0;
+      max-width: 100%;
+    }
+
+    #rest-timer-card .meta-grid .field {
+    grid-column: auto !important;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    }
+
+    /* Rest Timer fields: restore a normal 2 × 2 grid */
+    #workout > .card:nth-of-type(3) .meta-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #workout > .card:nth-of-type(3) .meta-grid .field {
+      grid-column: auto !important;
+    }
+
     #workout > .card:first-of-type .meta-grid input,
     #workout > .card:first-of-type .meta-grid select {
       display: block;
@@ -439,7 +465,7 @@
         <div id="exerciseList" class="rounds"></div>
       </div>
 
-<div class="card">
+<div class="card"> id="rest-timer-card">
   <h2>Rest timer</h2>
   <p>Use after completing a full round.</p>
 
