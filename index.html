@@ -39,12 +39,21 @@
       font-weight: 750;
     }
 
-    .app { max-width: 1080px; margin: 0 auto; padding: 1.2rem; }
+    .app {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 1.2rem;
+    }
+
     header { margin: 1rem 0 1.2rem; }
     h1 { margin: 0; font-size: clamp(1.8rem, 5vw, 2.6rem); }
     h2 { margin: 0 0 .35rem; font-size: 1.25rem; }
     h3 { margin: 0 0 .4rem; font-size: 1rem; }
-    p { color: var(--muted); line-height: 1.55; }
+
+    p {
+      color: var(--muted);
+      line-height: 1.55;
+    }
 
     .tabs {
       display: grid;
@@ -84,33 +93,27 @@
       align-items: start;
     }
 
-    /* Session Details: Date / Week + Session / Kettlebell weight */
+    /* Session Details: date, week, session, and kettlebell weight */
     #workout > .card:first-of-type .meta-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .7rem;
       width: 100%;
-      max-width: 100%;
       min-width: 0;
+      max-width: 100%;
     }
 
     #workout > .card:first-of-type .meta-grid .field {
-      min-width: 0;
       width: 100%;
+      min-width: 0;
       max-width: 100%;
     }
 
-    /* Date, Week/Session, and weight on separate rows */
-    #workout > .card:first-of-type .meta-grid .field:nth-child(1) {
-      grid-column: 1;
-    }
-
-    #workout > .card:first-of-type .meta-grid .field:nth-child(2) {
-      grid-column: 1;
-    }
-
+    /* Date, Week, and Kettlebell weight use the left column on separate rows. */
+    #workout > .card:first-of-type .meta-grid .field:nth-child(1),
+    #workout > .card:first-of-type .meta-grid .field:nth-child(2),
     #workout > .card:first-of-type .meta-grid .field:nth-child(4) {
-     grid-column: 1;
+      grid-column: 1;
     }
 
     #workout > .card:first-of-type .meta-grid input,
@@ -122,27 +125,22 @@
       box-sizing: border-box;
     }
 
-    /* Keep native date picker inside its grid cell */
     #workout > .card:first-of-type .meta-grid input[type="date"] {
-      width: 100%;
-      min-width: 0;
-      max-width: 100%;
-      box-sizing: border-box;
       overflow: hidden;
     }
 
     .field label {
       display: block;
-      font-size: .83rem;
-      color: var(--muted);
       margin-bottom: .35rem;
+      color: var(--muted);
+      font-size: .83rem;
       font-weight: 700;
     }
 
     .label-hint {
+      color: var(--muted);
       font-size: .76rem;
       font-weight: 600;
-      color: var(--muted);
     }
 
     input, textarea, select {
@@ -157,12 +155,10 @@
       padding: .68rem .72rem;
     }
 
-    input[type="date"] {
-      min-width: 0;
-      max-width: 100%;
+    textarea {
+      min-height: 100px;
+      resize: vertical;
     }
-
-    textarea { min-height: 100px; resize: vertical; }
 
     .actions {
       display: flex;
@@ -171,10 +167,27 @@
       margin-top: .9rem;
     }
 
-    .primary { background: var(--accent); color: #10200f; }
-    .secondary { background: var(--panel-2); color: var(--text); border: 1px solid var(--line); }
-    .danger { background: #542526; color: #ffe6e5; border: 1px solid #803e3e; }
-    .small { padding: .48rem .7rem; font-size: .84rem; }
+    .primary {
+      background: var(--accent);
+      color: #10200f;
+    }
+
+    .secondary {
+      background: var(--panel-2);
+      color: var(--text);
+      border: 1px solid var(--line);
+    }
+
+    .danger {
+      background: #542526;
+      color: #ffe6e5;
+      border: 1px solid #803e3e;
+    }
+
+    .small {
+      padding: .48rem .7rem;
+      font-size: .84rem;
+    }
 
     .rounds {
       display: grid;
@@ -184,17 +197,17 @@
     }
 
     .exercise {
-      border: 1px solid var(--line);
-      background: #141b14;
-      border-radius: 12px;
       padding: .85rem;
+      background: #141b14;
+      border: 1px solid var(--line);
+      border-radius: 12px;
     }
 
     .exercise-top {
       display: flex;
       justify-content: space-between;
-      gap: .75rem;
       align-items: start;
+      gap: .75rem;
     }
 
     .target {
@@ -206,7 +219,7 @@
 
     .round-inputs {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: .55rem;
       margin-top: .7rem;
     }
@@ -215,6 +228,7 @@
       color: var(--muted);
       font-size: .78rem;
       font-weight: 700;
+      min-width: 0;
     }
 
     .round-inputs input {
@@ -223,12 +237,38 @@
       color: var(--text);
     }
 
-    /* Rest Timer: readout, presets, then actions */
+    /* Separate right/left-arm rows for unilateral exercises. */
+    .exercise-arm-rows {
+      display: grid;
+      gap: .55rem;
+      margin-top: .7rem;
+    }
+
+    .arm-row {
+      display: grid;
+      grid-template-columns: 5.5rem minmax(0, 1fr);
+      align-items: end;
+      gap: .6rem;
+      min-width: 0;
+    }
+
+    .arm-row .round-inputs {
+      margin-top: 0;
+    }
+
+    .arm-label {
+      padding-bottom: .68rem;
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    /* Rest timer: full-width readout, presets, then actions. */
     .timer {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: .6rem;
       align-items: center;
+      gap: .6rem;
     }
 
     .timer-readout {
@@ -245,8 +285,8 @@
     .timer .preset { width: 100%; }
 
     .timer-actions {
-      grid-column: 1 / -1;
       display: grid;
+      grid-column: 1 / -1;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .6rem;
     }
@@ -255,21 +295,21 @@
 
     .note {
       padding: .75rem;
+      color: var(--muted);
       background: #1c261d;
       border-left: 3px solid var(--accent);
       border-radius: 8px;
-      color: var(--muted);
       line-height: 1.45;
     }
 
     .history-item {
-      border-top: 1px solid var(--line);
       padding: .9rem 0;
+      border-top: 1px solid var(--line);
     }
 
     .history-item:first-child {
-      border-top: 0;
       padding-top: 0;
+      border-top: 0;
     }
 
     .history-head {
@@ -281,34 +321,62 @@
 
     .badge {
       display: inline-block;
-      border-radius: 999px;
       padding: .22rem .5rem;
+      color: #d9ffd1;
+      background: #28462a;
+      border-radius: 999px;
       font-size: .76rem;
       font-weight: 800;
-      background: #28462a;
-      color: #d9ffd1;
     }
 
-    .badge.repeat { background: #593b20; color: #ffe2a7; }
-    .badge.maintain { background: #283f58; color: #d7ebff; }
+    .badge.repeat {
+      color: #ffe2a7;
+      background: #593b20;
+    }
+
+    .badge.maintain {
+      color: #d7ebff;
+      background: #283f58;
+    }
 
     .history-details {
+      margin-top: .35rem;
       color: var(--muted);
       font-size: .9rem;
       line-height: 1.55;
-      margin-top: .35rem;
     }
 
-    .guide-list { margin: .45rem 0 0; padding-left: 1.15rem; }
-    .guide-list li { color: var(--muted); margin: .45rem 0; line-height: 1.45; }
+    .guide-list {
+      margin: .45rem 0 0;
+      padding-left: 1.15rem;
+    }
 
-    .empty { color: var(--muted); padding: 1rem 0; }
+    .guide-list li {
+      margin: .45rem 0;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .empty {
+      padding: 1rem 0;
+      color: var(--muted);
+    }
+
     .muted { color: var(--muted); }
     .hidden { display: none !important; }
 
     @media (max-width: 420px) {
-      #workout > .grid {
+      .grid {
         grid-template-columns: 1fr;
+      }
+
+      .arm-row {
+        grid-template-columns: 1fr;
+        gap: .25rem;
+      }
+
+      .arm-label {
+        padding-bottom: 0;
       }
     }
 
@@ -374,6 +442,7 @@
       <div class="card">
         <h2>Rest timer</h2>
         <p>Use after completing a full round.</p>
+
         <div class="timer">
           <span id="timerReadout" class="timer-readout">01:00</span>
 
@@ -386,6 +455,7 @@
             <button class="secondary small" id="timerReset">Reset</button>
           </div>
         </div>
+
         <div class="grid meta-grid" style="margin-top: 1rem;">
           <div class="field">
             <label for="rest1">Rest after round 1 (seconds)</label>
@@ -408,15 +478,21 @@
 
       <div class="card">
         <h2>Finish session</h2>
+
         <div class="field">
           <label for="notes">Notes</label>
           <textarea id="notes" placeholder="Form notes, energy, pain, adjustments, etc."></textarea>
         </div>
+
         <label style="display:flex; gap:.55rem; align-items:center; margin-top:.85rem; color:var(--muted);">
           <input id="completed" type="checkbox" style="width:auto;" />
           Workout completed
         </label>
-        <div id="suggestion" class="note" style="margin-top:.9rem;">Enter reps and RPE to receive a progression suggestion.</div>
+
+        <div id="suggestion" class="note" style="margin-top:.9rem;">
+          Enter reps and RPE to receive a progression suggestion.
+        </div>
+
         <div class="actions">
           <button class="primary" id="saveWorkout">Save workout</button>
           <button class="secondary" id="clearWorkout">Clear form</button>
@@ -433,6 +509,7 @@
           </div>
           <button class="danger small" id="clearHistory">Clear history</button>
         </div>
+
         <div class="actions">
           <button class="secondary small" id="exportCsv">Export CSV</button>
           <button class="secondary small" id="exportJson">Export JSON backup</button>
@@ -441,6 +518,7 @@
             <input id="importJson" type="file" accept="application/json" class="hidden" />
           </label>
         </div>
+
         <div id="historyList" style="margin-top: 1rem;"></div>
       </div>
     </section>
@@ -498,453 +576,603 @@
       </div>
     </section>
   </main>
+</body>
+<script>
+  const EXERCISES = [
+    { id: "deadlift", name: "Deadlift", target: 12, label: "12 reps" },
+    { id: "gobletSquat", name: "Goblet squat", target: 10, label: "10 reps" },
+    { id: "swing", name: "Two-hand swing", target: 15, label: "15 reps" },
+    { id: "press", name: "Overhead press", target: 8, label: "8 reps per arm", bilateral: true },
+    { id: "row", name: "Bent-over row", target: 10, label: "10 reps per arm", bilateral: true }
+  ];
 
-  <script>
-    const EXERCISES = [
-      { id: "deadlift", name: "Deadlift", target: 12, label: "12 reps" },
-      { id: "gobletSquat", name: "Goblet squat", target: 10, label: "10 reps" },
-      { id: "swing", name: "Two-hand swing", target: 15, label: "15 reps" },
-      { id: "press", name: "Overhead press", target: 8, label: "8 reps per arm", bilateral: true },
-      { id: "row", name: "Bent-over row", target: 10, label: "10 reps per arm", bilateral: true }
-    ];
+  const HISTORY_KEY = "kettlebell-workout-history-v1";
+  const DRAFT_KEY = "kettlebell-workout-draft-v1";
+  let timerSeconds = 60;
+  let timerInterval = null;
 
-    const HISTORY_KEY = "kettlebell-workout-history-v1";
-    const DRAFT_KEY = "kettlebell-workout-draft-v1";
-    let timerSeconds = 60;
-    let timerInterval = null;
+  const $ = (id) => document.getElementById(id);
 
-    const $ = (id) => document.getElementById(id);
-
-    function renderExercises() {
-      $("exerciseList").innerHTML = EXERCISES.map(exercise => `
-        <article class="exercise">
-          <div class="exercise-top">
-            <div>
-              <h3>${exercise.name}</h3>
-              <span class="muted">${exercise.bilateral ? "Record reps per arm." : "Record total reps."}</span>
-            </div>
-            <span class="target">Target: ${exercise.label}</span>
+  function renderExercises() {
+    $("exerciseList").innerHTML = EXERCISES.map(exercise => `
+      <article class="exercise">
+        <div class="exercise-top">
+          <div>
+            <h3>${exercise.name}</h3>
+            <span class="muted">${exercise.bilateral ? "Record reps separately for each arm." : "Record total reps."}</span>
           </div>
+          <span class="target">Target: ${exercise.label}</span>
+        </div>
+
+        ${exercise.bilateral ? `
+          <div class="exercise-arm-rows">
+            ${["right", "left"].map(arm => `
+              <div class="arm-row">
+                <span class="arm-label">${arm === "right" ? "Right arm" : "Left arm"}</span>
+                <div class="round-inputs">
+                  ${[1, 2, 3].map(round => `
+                    <label>Round ${round}
+                      <input type="number" min="0" inputmode="numeric"
+                        data-exercise="${exercise.id}"
+                        data-arm="${arm}"
+                        data-round="${round}"
+                        placeholder="${exercise.target}" />
+                    </label>
+                  `).join("")}
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        ` : `
           <div class="round-inputs">
             ${[1, 2, 3].map(round => `
               <label>Round ${round}
                 <input type="number" min="0" inputmode="numeric"
-                  data-exercise="${exercise.id}" data-round="${round}"
+                  data-exercise="${exercise.id}"
+                  data-round="${round}"
                   placeholder="${exercise.target}" />
               </label>
             `).join("")}
           </div>
-        </article>
-      `).join("");
+        `}
+      </article>
+    `).join("");
 
-      document.querySelectorAll("[data-exercise]").forEach(input => {
-        input.addEventListener("input", () => {
-          updateSuggestion();
-          saveDraft();
-        });
+    document.querySelectorAll("[data-exercise]").forEach(input => {
+      input.addEventListener("input", () => {
+        updateSuggestion();
+        saveDraft();
       });
+    });
+  }
+
+  function today() {
+    return new Date().toISOString().slice(0, 10);
+  }
+
+  function getHistory() {
+    try {
+      return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
+    } catch {
+      return [];
     }
+  }
 
-    function today() {
-      return new Date().toISOString().slice(0, 10);
-    }
+  function setHistory(history) {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  }
 
-    function getHistory() {
-      try {
-        return JSON.parse(localStorage.getItem(HISTORY_KEY)) || [];
-      } catch {
-        return [];
-      }
-    }
+  function suggestedWeekSession() {
+    const history = getHistory();
+    if (!history.length) return { week: 1, session: 1 };
 
-    function setHistory(history) {
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
-    }
+    const latest = [...history].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+    const currentWeek = Number(latest.week) || 1;
+    const currentSession = Number(latest.session) || 1;
 
-    function suggestedWeekSession() {
-      const history = getHistory();
-      if (!history.length) return { week: 1, session: 1 };
+    if (currentSession >= 3) return { week: currentWeek + 1, session: 1 };
+    return { week: currentWeek, session: currentSession + 1 };
+  }
 
-      const latest = [...history].sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-      const currentWeek = Number(latest.week) || 1;
-      const currentSession = Number(latest.session) || 1;
+  function setDefaults() {
+    const next = suggestedWeekSession();
 
-      if (currentSession >= 3) return { week: currentWeek + 1, session: 1 };
-      return { week: currentWeek, session: currentSession + 1 };
-    }
+    $("date").value = today();
+    $("week").value = next.week;
+    $("session").value = next.session;
+    $("completed").checked = false;
+    $("rest1").value = "";
+    $("rest2").value = "";
+    $("duration").value = "";
+    $("rpe").value = "";
+    $("weight").value = "";
+    $("notes").value = "";
 
-    function setDefaults() {
-      const next = suggestedWeekSession();
-      $("date").value = today();
-      $("week").value = next.week;
-      $("session").value = next.session;
-      $("completed").checked = false;
-      $("rest1").value = "";
-      $("rest2").value = "";
-      $("duration").value = "";
-      $("rpe").value = "";
-      $("weight").value = "";
-      $("notes").value = "";
-      document.querySelectorAll("[data-exercise]").forEach(input => input.value = "");
-      updateSuggestion();
-      saveDraft();
-    }
+    document.querySelectorAll("[data-exercise]").forEach(input => {
+      input.value = "";
+    });
 
-    function collectReps() {
-      const reps = {};
-      EXERCISES.forEach(exercise => {
+    updateSuggestion();
+    saveDraft();
+  }
+
+  function collectReps() {
+    const reps = {};
+
+    EXERCISES.forEach(exercise => {
+      if (exercise.bilateral) {
+        reps[exercise.id] = {
+          right: [1, 2, 3].map(round => {
+            const input = document.querySelector(
+              `[data-exercise="${exercise.id}"][data-arm="right"][data-round="${round}"]`
+            );
+            return Number(input?.value) || 0;
+          }),
+          left: [1, 2, 3].map(round => {
+            const input = document.querySelector(
+              `[data-exercise="${exercise.id}"][data-arm="left"][data-round="${round}"]`
+            );
+            return Number(input?.value) || 0;
+          })
+        };
+      } else {
         reps[exercise.id] = [1, 2, 3].map(round => {
-          const input = document.querySelector(`[data-exercise="${exercise.id}"][data-round="${round}"]`);
-          return Number(input.value) || 0;
+          const input = document.querySelector(
+            `[data-exercise="${exercise.id}"][data-round="${round}"]`
+          );
+          return Number(input?.value) || 0;
         });
-      });
-      return reps;
+      }
+    });
+
+    return reps;
+  }
+
+  function allTargetsMet(reps) {
+    return EXERCISES.every(exercise => {
+      if (exercise.bilateral) {
+        const right = reps[exercise.id]?.right || [0, 0, 0];
+        const left = reps[exercise.id]?.left || [0, 0, 0];
+
+        return right.every(value => value >= exercise.target) &&
+          left.every(value => value >= exercise.target);
+      }
+
+      return (reps[exercise.id] || [0, 0, 0])
+        .every(value => value >= exercise.target);
+    });
+  }
+
+  function calculateDecision() {
+    const reps = collectReps();
+    const rpe = Number($("rpe").value);
+    const completed = $("completed").checked;
+    const targetsMet = allTargetsMet(reps);
+
+    if (!completed || !targetsMet) {
+      return {
+        type: "repeat",
+        title: "Repeat session",
+        text: "Missed targets or an incomplete session: repeat this weight next workout."
+      };
     }
 
-    function allTargetsMet(reps) {
-      return EXERCISES.every(exercise =>
-        reps[exercise.id].every(value => value >= exercise.target)
-      );
+    if (!rpe) {
+      return {
+        type: "maintain",
+        title: "Add RPE",
+        text: "All targets are met. Add an RPE to get a progression recommendation."
+      };
     }
 
-    function calculateDecision() {
-      const reps = collectReps();
-      const rpe = Number($("rpe").value);
-      const completed = $("completed").checked;
-      const targetsMet = allTargetsMet(reps);
+    if (rpe <= 7) {
+      return {
+        type: "increase",
+        title: "Increase weight",
+        text: "All targets met at RPE 6–7 or lower: increase weight slightly next time, if form stayed solid."
+      };
+    }
 
-      if (!completed || !targetsMet) {
-        return {
-          type: "repeat",
-          title: "Repeat session",
-          text: "Missed targets or an incomplete session: repeat this weight next workout."
-        };
-      }
-
-      if (!rpe) {
-        return {
-          type: "maintain",
-          title: "Add RPE",
-          text: "All targets are met. Add an RPE to get a progression recommendation."
-        };
-      }
-
-      if (rpe <= 7) {
-        return {
-          type: "increase",
-          title: "Increase weight",
-          text: "All targets met at RPE 6–7 or lower: increase weight slightly next time, if form stayed solid."
-        };
-      }
-
-      if (rpe >= 8) {
-        return {
-          type: "maintain",
-          title: "Maintain weight",
-          text: "All targets met, but effort was high: keep or reduce weight and consider more rest."
-        };
-      }
-
+    if (rpe >= 8) {
       return {
         type: "maintain",
         title: "Maintain weight",
-        text: "All targets met at a moderate effort: repeat this weight and aim for cleaner, more consistent reps."
+        text: "All targets met, but effort was high: keep or reduce weight and consider more rest."
       };
     }
 
-    function updateSuggestion() {
-      const decision = calculateDecision();
-      $("suggestion").innerHTML = `<strong>${decision.title}:</strong> ${decision.text}`;
+    return {
+      type: "maintain",
+      title: "Maintain weight",
+      text: "All targets met at a moderate effort: repeat this weight and aim for cleaner, more consistent reps."
+    };
+  }
+
+  function updateSuggestion() {
+    const decision = calculateDecision();
+    $("suggestion").innerHTML = `<strong>${decision.title}:</strong> ${decision.text}`;
+  }
+
+  function saveDraft() {
+    const draft = {
+      date: $("date").value,
+      week: $("week").value,
+      session: $("session").value,
+      weight: $("weight").value,
+      rest1: $("rest1").value,
+      rest2: $("rest2").value,
+      duration: $("duration").value,
+      rpe: $("rpe").value,
+      notes: $("notes").value,
+      completed: $("completed").checked,
+      reps: collectReps()
+    };
+
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
+  }
+
+  function loadDraft() {
+    let draft;
+
+    try {
+      draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+    } catch {
+      return false;
     }
 
-    function saveDraft() {
-      const draft = {
-        date: $("date").value,
-        week: $("week").value,
-        session: $("session").value,
-        weight: $("weight").value,
-        rest1: $("rest1").value,
-        rest2: $("rest2").value,
-        duration: $("duration").value,
-        rpe: $("rpe").value,
-        notes: $("notes").value,
-        completed: $("completed").checked,
-        reps: collectReps()
-      };
-      localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-    }
+    if (!draft) return false;
 
-    function loadDraft() {
-      let draft;
-      try {
-        draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
-      } catch {
-        return false;
-      }
-      if (!draft) return false;
+    ["date", "week", "session", "weight", "rest1", "rest2", "duration", "rpe", "notes"].forEach(id => {
+      if (draft[id] !== undefined) $(id).value = draft[id];
+    });
 
-      ["date", "week", "session", "weight", "rest1", "rest2", "duration", "rpe", "notes"].forEach(id => {
-        if (draft[id] !== undefined) $(id).value = draft[id];
-      });
-      $("completed").checked = draft.completed === true;
+    $("completed").checked = draft.completed === true;
 
-      EXERCISES.forEach(exercise => {
+    EXERCISES.forEach(exercise => {
+      if (exercise.bilateral) {
+        ["right", "left"].forEach(arm => {
+          [1, 2, 3].forEach((round, index) => {
+            const input = document.querySelector(
+              `[data-exercise="${exercise.id}"][data-arm="${arm}"][data-round="${round}"]`
+            );
+
+            if (draft.reps?.[exercise.id]?.[arm]?.[index] !== undefined) {
+              input.value = draft.reps[exercise.id][arm][index] || "";
+            }
+          });
+        });
+      } else {
         [1, 2, 3].forEach((round, index) => {
-          const input = document.querySelector(`[data-exercise="${exercise.id}"][data-round="${round}"]`);
+          const input = document.querySelector(
+            `[data-exercise="${exercise.id}"][data-round="${round}"]`
+          );
+
           if (draft.reps?.[exercise.id]?.[index] !== undefined) {
             input.value = draft.reps[exercise.id][index] || "";
           }
         });
-      });
+      }
+    });
 
-      updateSuggestion();
-      return true;
+    updateSuggestion();
+    return true;
+  }
+
+  function saveWorkout() {
+    const reps = collectReps();
+    const decision = calculateDecision();
+
+    const entry = {
+      id: Date.now(),
+      date: $("date").value || today(),
+      week: Number($("week").value) || 1,
+      session: Number($("session").value) || 1,
+      weight: Number($("weight").value) || 0,
+      reps,
+      rest1: Number($("rest1").value) || 0,
+      rest2: Number($("rest2").value) || 0,
+      duration: Number($("duration").value) || 0,
+      rpe: Number($("rpe").value) || null,
+      notes: $("notes").value.trim(),
+      completed: $("completed").checked,
+      decision: decision.type,
+      decisionTitle: decision.title,
+      decisionText: decision.text
+    };
+
+    const history = getHistory();
+    history.unshift(entry);
+    setHistory(history);
+
+    localStorage.removeItem(DRAFT_KEY);
+    renderHistory();
+    setDefaults();
+    showView("history");
+  }
+
+  function formatReps(entry) {
+    return EXERCISES.map(exercise => {
+      const savedReps = entry.reps?.[exercise.id];
+
+      if (exercise.bilateral) {
+        /* Supports older saved workouts with one combined set of press/row reps. */
+        if (Array.isArray(savedReps)) {
+          return `${exercise.name}: ${savedReps.join("/")}`;
+        }
+
+        const right = savedReps?.right || [0, 0, 0];
+        const left = savedReps?.left || [0, 0, 0];
+
+        return `${exercise.name}: R ${right.join("/")} · L ${left.join("/")}`;
+      }
+
+      const rounds = savedReps || [0, 0, 0];
+      return `${exercise.name}: ${rounds.join("/")}`;
+    }).join(" · ");
+  }
+
+  function renderHistory() {
+    const history = getHistory();
+
+    if (!history.length) {
+      $("historyList").innerHTML = `<div class="empty">No workouts saved yet.</div>`;
+      return;
     }
 
-    function saveWorkout() {
-      const reps = collectReps();
-      const decision = calculateDecision();
+    $("historyList").innerHTML = history.map(entry => {
+      const badgeClass = entry.decision === "repeat" ? "repeat" :
+        entry.decision === "maintain" ? "maintain" : "";
 
-      const entry = {
-        id: Date.now(),
-        date: $("date").value || today(),
-        week: Number($("week").value) || 1,
-        session: Number($("session").value) || 1,
-        weight: Number($("weight").value) || 0,
-        reps,
-        rest1: Number($("rest1").value) || 0,
-        rest2: Number($("rest2").value) || 0,
-        duration: Number($("duration").value) || 0,
-        rpe: Number($("rpe").value) || null,
-        notes: $("notes").value.trim(),
-        completed: $("completed").checked,
-        decision: decision.type,
-        decisionTitle: decision.title,
-        decisionText: decision.text
-      };
+      return `
+        <article class="history-item">
+          <div class="history-head">
+            <div>
+              <strong>${entry.date}</strong>
+              <div class="muted">Week ${entry.week}, Session ${entry.session} · ${entry.weight || "—"} kg</div>
+            </div>
+            <span class="badge ${badgeClass}">${entry.decisionTitle || entry.decision}</span>
+          </div>
+          <div class="history-details">
+            ${formatReps(entry)}<br>
+            RPE: ${entry.rpe ?? "—"} · Rest: ${entry.rest1 || "—"}s / ${entry.rest2 || "—"}s · Time: ${entry.duration || "—"} min<br>
+            ${entry.completed ? "Completed" : "Not completed"} — ${entry.decisionText || ""}
+            ${entry.notes ? `<br><em>Notes: ${escapeHtml(entry.notes)}</em>` : ""}
+          </div>
+        </article>
+      `;
+    }).join("");
+  }
 
-      const history = getHistory();
-      history.unshift(entry);
-      setHistory(history);
-      localStorage.removeItem(DRAFT_KEY);
-      renderHistory();
-      setDefaults();
-      showView("history");
-    }
+  function escapeHtml(value) {
+    return value.replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#039;"
+    }[char]));
+  }
 
-    function formatReps(entry) {
-      return EXERCISES.map(exercise => {
-        const rounds = entry.reps?.[exercise.id] || [0, 0, 0];
-        return `${exercise.name}: ${rounds.join("/")}`;
-      }).join(" · ");
-    }
+  function updateTimer() {
+    const minutes = Math.floor(timerSeconds / 60).toString().padStart(2, "0");
+    const seconds = (timerSeconds % 60).toString().padStart(2, "0");
+    $("timerReadout").textContent = `${minutes}:${seconds}`;
+  }
 
-    function renderHistory() {
-      const history = getHistory();
-      if (!history.length) {
-        $("historyList").innerHTML = `<div class="empty">No workouts saved yet.</div>`;
+  function startTimer() {
+    if (timerInterval) return;
+
+    timerInterval = setInterval(() => {
+      if (timerSeconds <= 0) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        $("timerStart").textContent = "Start";
         return;
       }
 
-      $("historyList").innerHTML = history.map(entry => {
-        const badgeClass = entry.decision === "repeat" ? "repeat" :
-          entry.decision === "maintain" ? "maintain" : "";
-
-        return `
-          <article class="history-item">
-            <div class="history-head">
-              <div>
-                <strong>${entry.date}</strong>
-                <div class="muted">Week ${entry.week}, Session ${entry.session} · ${entry.weight || "—"} kg</div>
-              </div>
-              <span class="badge ${badgeClass}">${entry.decisionTitle || entry.decision}</span>
-            </div>
-            <div class="history-details">
-              ${formatReps(entry)}<br>
-              RPE: ${entry.rpe ?? "—"} · Rest: ${entry.rest1 || "—"}s / ${entry.rest2 || "—"}s · Time: ${entry.duration || "—"} min<br>
-              ${entry.completed ? "Completed" : "Not completed"} — ${entry.decisionText || ""}
-              ${entry.notes ? `<br><em>Notes: ${escapeHtml(entry.notes)}</em>` : ""}
-            </div>
-          </article>
-        `;
-      }).join("");
-    }
-
-    function escapeHtml(value) {
-      return value.replace(/[&<>"']/g, char => ({
-        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#039;"
-      }[char]));
-    }
-
-    function updateTimer() {
-      const minutes = Math.floor(timerSeconds / 60).toString().padStart(2, "0");
-      const seconds = (timerSeconds % 60).toString().padStart(2, "0");
-      $("timerReadout").textContent = `${minutes}:${seconds}`;
-    }
-
-    function startTimer() {
-      if (timerInterval) return;
-      timerInterval = setInterval(() => {
-        if (timerSeconds <= 0) {
-          clearInterval(timerInterval);
-          timerInterval = null;
-          $("timerStart").textContent = "Start";
-          return;
-        }
-        timerSeconds -= 1;
-        updateTimer();
-        if (timerSeconds === 0) {
-          try { navigator.vibrate?.([150, 100, 150]); } catch {}
-          alert("Rest complete.");
-        }
-      }, 1000);
-      $("timerStart").textContent = "Running…";
-    }
-
-    function resetTimer() {
-      clearInterval(timerInterval);
-      timerInterval = null;
-      timerSeconds = 60;
-      $("timerStart").textContent = "Start";
+      timerSeconds -= 1;
       updateTimer();
-    }
 
-    function download(filename, content, type) {
-      const blob = new Blob([content], { type });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = filename;
-      link.click();
-      URL.revokeObjectURL(url);
-    }
+      if (timerSeconds === 0) {
+        try {
+          navigator.vibrate?.([150, 100, 150]);
+        } catch {}
 
-    function exportCsv() {
-      const history = getHistory();
-      const headers = [
-        "date", "week", "session", "weight_kg",
-        "deadlift_r1", "deadlift_r2", "deadlift_r3",
-        "goblet_squat_r1", "goblet_squat_r2", "goblet_squat_r3",
-        "swing_r1", "swing_r2", "swing_r3",
-        "press_r1", "press_r2", "press_r3",
-        "row_r1", "row_r2", "row_r3",
-        "rest1_seconds", "rest2_seconds", "duration_minutes",
-        "rpe", "completed", "decision", "notes"
+        alert("Rest complete.");
+      }
+    }, 1000);
+
+    $("timerStart").textContent = "Running…";
+  }
+
+  function resetTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerSeconds = 60;
+    $("timerStart").textContent = "Start";
+    updateTimer();
+  }
+
+  function download(filename, content, type) {
+    const blob = new Blob([content], { type });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = filename;
+    link.click();
+
+    URL.revokeObjectURL(url);
+  }
+
+  function exportCsv() {
+    const history = getHistory();
+
+    const headers = [
+      "date", "week", "session", "weight_kg",
+      "deadlift_r1", "deadlift_r2", "deadlift_r3",
+      "goblet_squat_r1", "goblet_squat_r2", "goblet_squat_r3",
+      "swing_r1", "swing_r2", "swing_r3",
+      "press_right_r1", "press_right_r2", "press_right_r3",
+      "press_left_r1", "press_left_r2", "press_left_r3",
+      "row_right_r1", "row_right_r2", "row_right_r3",
+      "row_left_r1", "row_left_r2", "row_left_r3",
+      "rest1_seconds", "rest2_seconds", "duration_minutes",
+      "rpe", "completed", "decision", "notes"
+    ];
+
+    const rows = history.map(entry => {
+      const press = entry.reps?.press;
+      const row = entry.reps?.row;
+
+      const pressRight = Array.isArray(press) ? press : (press?.right || []);
+      const pressLeft = Array.isArray(press) ? [] : (press?.left || []);
+      const rowRight = Array.isArray(row) ? row : (row?.right || []);
+      const rowLeft = Array.isArray(row) ? [] : (row?.left || []);
+
+      const values = [
+        entry.date, entry.week, entry.session, entry.weight,
+        ...(entry.reps?.deadlift || []),
+        ...(entry.reps?.gobletSquat || []),
+        ...(entry.reps?.swing || []),
+        ...pressRight,
+        ...pressLeft,
+        ...rowRight,
+        ...rowLeft,
+        entry.rest1, entry.rest2, entry.duration, entry.rpe,
+        entry.completed, entry.decisionTitle, entry.notes
       ];
 
-      const rows = history.map(entry => {
-        const values = [
-          entry.date, entry.week, entry.session, entry.weight,
-          ...(entry.reps?.deadlift || []),
-          ...(entry.reps?.gobletSquat || []),
-          ...(entry.reps?.swing || []),
-          ...(entry.reps?.press || []),
-          ...(entry.reps?.row || []),
-          entry.rest1, entry.rest2, entry.duration, entry.rpe,
-          entry.completed, entry.decisionTitle, entry.notes
-        ];
-        return values.map(value => `"${String(value ?? "").replaceAll('"', '""')}"`).join(",");
-      });
-
-      download("kettlebell-workout-history.csv", [headers.join(","), ...rows].join("\n"), "text/csv");
-    }
-
-    function showView(viewId) {
-      document.querySelectorAll(".view").forEach(view => {
-        view.classList.toggle("active", view.id === viewId);
-      });
-      document.querySelectorAll(".tab").forEach(tab => {
-        tab.classList.toggle("active", tab.dataset.view === viewId);
-      });
-    }
-
-    document.querySelectorAll(".tab").forEach(tab => {
-      tab.addEventListener("click", () => showView(tab.dataset.view));
+      return values
+        .map(value => `"${String(value ?? "").replaceAll('"', '""')}"`)
+        .join(",");
     });
 
-    $("fillTargets").addEventListener("click", () => {
-      EXERCISES.forEach(exercise => {
-        [1, 2, 3].forEach(round => {
-          document.querySelector(`[data-exercise="${exercise.id}"][data-round="${round}"]`).value = exercise.target;
+    download(
+      "kettlebell-workout-history.csv",
+      [headers.join(","), ...rows].join("\n"),
+      "text/csv"
+    );
+  }
+
+  function showView(viewId) {
+    document.querySelectorAll(".view").forEach(view => {
+      view.classList.toggle("active", view.id === viewId);
+    });
+
+    document.querySelectorAll(".tab").forEach(tab => {
+      tab.classList.toggle("active", tab.dataset.view === viewId);
+    });
+  }
+
+  document.querySelectorAll(".tab").forEach(tab => {
+    tab.addEventListener("click", () => showView(tab.dataset.view));
+  });
+
+  $("fillTargets").addEventListener("click", () => {
+    EXERCISES.forEach(exercise => {
+      if (exercise.bilateral) {
+        ["right", "left"].forEach(arm => {
+          [1, 2, 3].forEach(round => {
+            document.querySelector(
+              `[data-exercise="${exercise.id}"][data-arm="${arm}"][data-round="${round}"]`
+            ).value = exercise.target;
+          });
         });
-      });
+      } else {
+        [1, 2, 3].forEach(round => {
+          document.querySelector(
+            `[data-exercise="${exercise.id}"][data-round="${round}"]`
+          ).value = exercise.target;
+        });
+      }
+    });
+
+    updateSuggestion();
+    saveDraft();
+  });
+
+  ["date", "week", "session", "weight", "rest1", "rest2", "duration", "rpe", "notes", "completed"].forEach(id => {
+    $(id).addEventListener("input", () => {
       updateSuggestion();
       saveDraft();
     });
 
-    ["date", "week", "session", "weight", "rest1", "rest2", "duration", "rpe", "notes", "completed"].forEach(id => {
-      $(id).addEventListener("input", () => {
-        updateSuggestion();
-        saveDraft();
-      });
-      $(id).addEventListener("change", () => {
-        updateSuggestion();
-        saveDraft();
-      });
+    $(id).addEventListener("change", () => {
+      updateSuggestion();
+      saveDraft();
     });
+  });
 
-    document.querySelectorAll(".preset").forEach(button => {
-      button.addEventListener("click", () => {
-        clearInterval(timerInterval);
-        timerInterval = null;
-        timerSeconds = Number(button.dataset.seconds);
-        $("timerStart").textContent = "Start";
-        updateTimer();
-      });
+  document.querySelectorAll(".preset").forEach(button => {
+    button.addEventListener("click", () => {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerSeconds = Number(button.dataset.seconds);
+      $("timerStart").textContent = "Start";
+      updateTimer();
     });
+  });
 
-    $("timerStart").addEventListener("click", startTimer);
-    $("timerReset").addEventListener("click", resetTimer);
-    $("saveWorkout").addEventListener("click", saveWorkout);
+  $("timerStart").addEventListener("click", startTimer);
+  $("timerReset").addEventListener("click", resetTimer);
+  $("saveWorkout").addEventListener("click", saveWorkout);
 
-    $("clearWorkout").addEventListener("click", () => {
-      localStorage.removeItem(DRAFT_KEY);
+  $("clearWorkout").addEventListener("click", () => {
+    localStorage.removeItem(DRAFT_KEY);
+    setDefaults();
+  });
+
+  $("clearHistory").addEventListener("click", () => {
+    if (confirm("Delete all saved workout history?")) {
+      localStorage.removeItem(HISTORY_KEY);
+      renderHistory();
       setDefaults();
-    });
+    }
+  });
 
-    $("clearHistory").addEventListener("click", () => {
-      if (confirm("Delete all saved workout history?")) {
-        localStorage.removeItem(HISTORY_KEY);
+  $("exportJson").addEventListener("click", () => {
+    download(
+      "kettlebell-workout-backup.json",
+      JSON.stringify(getHistory(), null, 2),
+      "application/json"
+    );
+  });
+
+  $("exportCsv").addEventListener("click", exportCsv);
+
+  $("importJson").addEventListener("change", event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      try {
+        const imported = JSON.parse(reader.result);
+        if (!Array.isArray(imported)) throw new Error("Invalid backup");
+
+        setHistory(imported);
         renderHistory();
         setDefaults();
+        alert("Workout history imported.");
+      } catch {
+        alert("That file is not a valid workout-history JSON backup.");
       }
-    });
+    };
 
-    $("exportJson").addEventListener("click", () => {
-      download(
-        "kettlebell-workout-backup.json",
-        JSON.stringify(getHistory(), null, 2),
-        "application/json"
-      );
-    });
+    reader.readAsText(file);
+    event.target.value = "";
+  });
 
-    $("exportCsv").addEventListener("click", exportCsv);
+  renderExercises();
 
-    $("importJson").addEventListener("change", event => {
-      const file = event.target.files?.[0];
-      if (!file) return;
+  if (!loadDraft()) {
+    setDefaults();
+  }
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const imported = JSON.parse(reader.result);
-          if (!Array.isArray(imported)) throw new Error("Invalid backup");
-          setHistory(imported);
-          renderHistory();
-          setDefaults();
-          alert("Workout history imported.");
-        } catch {
-          alert("That file is not a valid workout-history JSON backup.");
-        }
-      };
-      reader.readAsText(file);
-      event.target.value = "";
-    });
-
-    renderExercises();
-    if (!loadDraft()) setDefaults();
-    renderHistory();
-    updateTimer();
-  </script>
+  renderHistory();
+  updateTimer();
+</script>
 </body>
 </html>
