@@ -106,27 +106,35 @@
       box-sizing: border-box;
     }
 
-    /* Prevent a date control's intrinsic sizing from widening its grid column */
+    /* Session Details: Date / Week + Session / Weight */
     #workout > .card:first-of-type .meta-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      overflow: hidden;
+     display: grid;
+     grid-template-columns: repeat(2, minmax(0, 1fr));
+     gap: .7rem;
+     width: 100%;
+    overflow: hidden;
     }
 
     #workout > .card:first-of-type .meta-grid .field {
-      min-width: 0;
-      width: 100%;
+    min-width: 0;
+    width: 100%;
+    }
+
+    #workout > .card:first-of-type .meta-grid .field:nth-child(1),
+    #workout > .card:first-of-type .meta-grid .field:nth-child(4) {
+    grid-column: 1 / -1;
     }
 
     #workout > .card:first-of-type .meta-grid input,
     #workout > .card:first-of-type .meta-grid select,
     #workout > .card:first-of-type .meta-grid input[type="date"] {
-      display: block;
-      min-width: 0;
-      width: 100%;
-      max-width: 100%;
-      box-sizing: border-box;
-    }
-
+    display: block;
+    min-width: 0;
+    width: 100%;
+    max-width: 100%;
+  box-sizing: border-box;
+}
+    
     /* Space below RPE to align the Rest Timer card */
     #rpe {
       margin-bottom: 1.55rem;
