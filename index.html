@@ -80,13 +80,16 @@
       gap: .85rem;
     }
 
-    /* Session Details: Date + Session equal; Week + Kettlebell weight equal */
+    /* Session Details: two fields per row */
     .meta-grid {
-      grid-template-columns: .8fr .8fr 1.2fr 1.2fr;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .7rem;
     }
 
     .meta-grid .field,
-    .meta-grid input {
+    .meta-grid input,
+    .meta-grid select {
       min-width: 0;
       max-width: 100%;
     }
@@ -101,6 +104,7 @@
 
     input, textarea, select {
       width: 100%;
+      box-sizing: border-box;
       color: var(--text);
       background: #111811;
       border: 1px solid var(--line);
@@ -167,23 +171,31 @@
       margin-top: .3rem;
     }
 
+    /* Rest Timer: restore the original flexible layout */
     .timer {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      align-items: end;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-end;
       gap: .6rem;
     }
 
     .timer .field {
+      flex: 1 1 calc(50% - .3rem);
       min-width: 0;
     }
 
     .timer-readout {
+      flex: 0 0 auto;
+      min-width: 88px;
       font-size: 1.5rem;
-      min-width: 0;
       font-variant-numeric: tabular-nums;
       font-weight: 800;
       color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .timer button {
+      flex: 0 0 auto;
     }
 
     .note {
@@ -240,8 +252,9 @@
     .hidden { display: none !important; }
 
     @media (min-width: 740px) {
+      /* Keep Session Details in a 2 × 2 arrangement */
       .meta-grid {
-        grid-template-columns: .8fr .8fr 1.2fr 1.2fr;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       .rounds {
