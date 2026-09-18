@@ -79,7 +79,9 @@
 
     .grid {
       display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .85rem;
+      align-items: start;
     }
 
     /* Session Details: Date / Week + Session / Kettlebell weight */
@@ -88,11 +90,14 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .7rem;
       width: 100%;
+      max-width: 100%;
+      min-width: 0;
     }
 
     #workout > .card:first-of-type .meta-grid .field {
       min-width: 0;
       width: 100%;
+      max-width: 100%;
     }
 
     /* Date is row 1; Weight is row 3 */
@@ -104,24 +109,19 @@
     #workout > .card:first-of-type .meta-grid input,
     #workout > .card:first-of-type .meta-grid select {
       display: block;
-      min-width: 0;
       width: 100%;
+      min-width: 0;
       max-width: 100%;
       box-sizing: border-box;
     }
 
-    /* Keep native date picker fully visible */
+    /* Keep native date picker inside its grid cell */
     #workout > .card:first-of-type .meta-grid input[type="date"] {
-      display: block;
-      min-width: 0;
       width: 100%;
+      min-width: 0;
       max-width: 100%;
       box-sizing: border-box;
-    }
-
-    /* Space below RPE to align the Rest Timer card */
-    #rpe {
-      margin-bottom: 1.55rem;
+      overflow: hidden;
     }
 
     .field label {
@@ -298,6 +298,12 @@
     .empty { color: var(--muted); padding: 1rem 0; }
     .muted { color: var(--muted); }
     .hidden { display: none !important; }
+
+    @media (max-width: 420px) {
+      #workout > .grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
     @media (min-width: 740px) {
       .rounds {
