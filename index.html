@@ -20,6 +20,7 @@
     }
 
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       min-width: 320px;
@@ -29,6 +30,7 @@
     }
 
     button, input, textarea, select { font: inherit; }
+
     button {
       border: 0;
       border-radius: 10px;
@@ -80,10 +82,10 @@
       gap: .85rem;
     }
 
-    /* Session Details and workout metrics: stable two-column layout */
+    /* Session Details and workout metrics */
     .meta-grid {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .7rem;
       width: 100%;
     }
@@ -100,12 +102,32 @@
       max-width: 100%;
     }
 
-    /* Keep each Session Details field in a fixed, equal-width column */
+    /*
+      Date / Week overlap fix:
+      - Each field is clipped to its own grid column.
+      - Date controls cannot expand past their column.
+    */
     #workout > .card:first-of-type .meta-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: hidden;
     }
 
-    /* Space below RPE to align the bottom of the Rest Timer card */
+    #workout > .card:first-of-type .meta-grid .field {
+      min-width: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    #workout > .card:first-of-type .meta-grid input,
+    #workout > .card:first-of-type .meta-grid select,
+    #workout > .card:first-of-type input[type="date"] {
+      min-width: 0;
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+
+    /* Space below RPE to align the Rest Timer card */
     #rpe {
       margin-bottom: 1.55rem;
     }
@@ -128,23 +150,6 @@
       padding: .68rem .72rem;
     }
 
-    /* Prevent the browser's date control from forcing a wider grid column */
-    input[type="date"] {
-      min-width: 0;
-      max-width: 100%;
-      width: 100%;
-    }
-
-    /* Keep all Session Details fields equal-width */
-    #workout > .card:first-of-type .meta-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    #workout > .card:first-of-type .meta-grid .field {
-      min-width: 0;
-      overflow: hidden;
-    }
-    
     textarea { min-height: 100px; resize: vertical; }
 
     .actions {
@@ -202,9 +207,11 @@
 
     .round-inputs input {
       margin-top: .3rem;
+      background: rgba(255, 255, 255, .05);
+      color: var(--text);
     }
 
-    /* Rest Timer: display, preset row, then action row */
+    /* Rest Timer: readout, presets, then actions */
     .timer {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -214,18 +221,16 @@
 
     .timer-readout {
       grid-column: 1 / -1;
-      text-align: center;
       min-width: 0;
-      font-size: 1.5rem;
-      font-variant-numeric: tabular-nums;
-      font-weight: 800;
       color: var(--accent);
+      font-size: 1.5rem;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
       white-space: nowrap;
     }
 
-    .timer .preset {
-      width: 100%;
-    }
+    .timer .preset { width: 100%; }
 
     .timer-actions {
       grid-column: 1 / -1;
@@ -234,9 +239,7 @@
       gap: .6rem;
     }
 
-    .timer-actions button {
-      width: 100%;
-    }
+    .timer-actions button { width: 100%; }
 
     .note {
       padding: .75rem;
