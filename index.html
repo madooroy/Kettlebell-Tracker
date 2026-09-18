@@ -80,16 +80,15 @@
       gap: .85rem;
     }
 
+    /* Mobile: Date/Session narrower; Week/Weight wider */
     .meta-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: .85fr 1.15fr;
     }
 
-    .meta-grid .field {
-      min-width: 0;
-    }
-
+    .meta-grid .field,
     .meta-grid input {
       min-width: 0;
+      max-width: 100%;
     }
 
     .field label {
@@ -164,7 +163,8 @@
       font-weight: 700;
     }
 
-    .round-inputs input { margin-top: .3rem; 
+    .round-inputs input {
+      margin-top: .3rem;
     }
 
     .timer {
@@ -195,7 +195,11 @@
       border-top: 1px solid var(--line);
       padding: .9rem 0;
     }
-    .history-item:first-child { border-top: 0; padding-top: 0; }
+
+    .history-item:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
 
     .history-head {
       display: flex;
@@ -213,6 +217,7 @@
       background: #28462a;
       color: #d9ffd1;
     }
+
     .badge.repeat { background: #593b20; color: #ffe2a7; }
     .badge.maintain { background: #283f58; color: #d7ebff; }
 
@@ -230,24 +235,18 @@
     .muted { color: var(--muted); }
     .hidden { display: none !important; }
 
-    /* Keeps Date and Week side by side without the date field overlapping Week */
-    .meta-grid {
-      grid-template-columns: minmax(0, 1.35fr) minmax(0, .65fr);
-    }
-
-    .meta-grid .field,
-    .meta-grid input {
-      min-width: 0;
-      max-width: 100%;
-    }
-
     @media (min-width: 740px) {
       .meta-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: .85fr 1.15fr .85fr 1.15fr;
       }
 
-      .rounds { grid-template-columns: repeat(2, 1fr); }
-      .exercise:last-child { grid-column: span 2; }
+      .rounds {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .exercise:last-child {
+        grid-column: span 2;
+      }
     }
   </style>
 </head>
