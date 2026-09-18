@@ -82,12 +82,13 @@
       gap: .85rem;
     }
 
-    /* Session Details and workout metrics */
+    /* Session Details: stable two-column layout */
     .meta-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: .7rem;
       width: 100%;
+      overflow: hidden;
     }
 
     .meta-grid .field {
@@ -96,17 +97,16 @@
     }
 
     .meta-grid input,
-    .meta-grid select {
+    .meta-grid select,
+    .meta-grid input[type="date"] {
+      display: block;
       min-width: 0;
       width: 100%;
       max-width: 100%;
+      box-sizing: border-box;
     }
 
-    /*
-      Date / Week overlap fix:
-      - Each field is clipped to its own grid column.
-      - Date controls cannot expand past their column.
-    */
+    /* Prevent a date control's intrinsic sizing from widening its grid column */
     #workout > .card:first-of-type .meta-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       overflow: hidden;
@@ -115,12 +115,12 @@
     #workout > .card:first-of-type .meta-grid .field {
       min-width: 0;
       width: 100%;
-      overflow: hidden;
     }
 
     #workout > .card:first-of-type .meta-grid input,
     #workout > .card:first-of-type .meta-grid select,
-    #workout > .card:first-of-type input[type="date"] {
+    #workout > .card:first-of-type .meta-grid input[type="date"] {
+      display: block;
       min-width: 0;
       width: 100%;
       max-width: 100%;
@@ -145,15 +145,22 @@
       font-weight: 600;
       color: var(--muted);
     }
-    
+
     input, textarea, select {
       width: 100%;
+      min-width: 0;
+      max-width: 100%;
       box-sizing: border-box;
       color: var(--text);
       background: #111811;
       border: 1px solid var(--line);
       border-radius: 9px;
       padding: .68rem .72rem;
+    }
+
+    input[type="date"] {
+      min-width: 0;
+      max-width: 100%;
     }
 
     textarea { min-height: 100px; resize: vertical; }
