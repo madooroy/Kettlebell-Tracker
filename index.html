@@ -439,42 +439,54 @@
         <div id="exerciseList" class="rounds"></div>
       </div>
 
-      <div class="card">
-        <h2>Rest timer</h2>
-        <p>Use after completing a full round.</p>
+<div class="grid">
+  <div class="card">
+    <h2>Rest timer</h2>
+    <p>Use after completing a full round.</p>
 
-        <div class="timer">
-          <span id="timerReadout" class="timer-readout">01:00</span>
+    <div class="timer">
+      <span id="timerReadout" class="timer-readout">01:00</span>
 
-          <button class="secondary small preset" data-seconds="60">60 sec</button>
-          <button class="secondary small preset" data-seconds="75">75 sec</button>
-          <button class="secondary small preset" data-seconds="90">90 sec</button>
+      <button class="secondary small preset" data-seconds="60">60 sec</button>
+      <button class="secondary small preset" data-seconds="75">75 sec</button>
+      <button class="secondary small preset" data-seconds="90">90 sec</button>
 
-          <div class="timer-actions">
-            <button class="primary small" id="timerStart">Start</button>
-            <button class="secondary small" id="timerReset">Reset</button>
-          </div>
-        </div>
-
-        <div class="grid meta-grid" style="margin-top: 1rem;">
-          <div class="field">
-            <label for="rest1">Rest after round 1 (seconds)</label>
-            <input id="rest1" type="number" min="0" placeholder="60" />
-          </div>
-          <div class="field">
-            <label for="rest2">Rest after round 2 (seconds)</label>
-            <input id="rest2" type="number" min="0" placeholder="60" />
-          </div>
-          <div class="field">
-            <label for="duration">Total workout time (minutes)</label>
-            <input id="duration" type="number" min="0" step="1" placeholder="30" />
-          </div>
-          <div class="field">
-            <label for="rpe">Session RPE<br><span class="label-hint">(1–10)</span></label>
-            <input id="rpe" type="number" min="1" max="10" placeholder="7" />
-          </div>
-        </div>
+      <div class="timer-actions">
+        <button class="primary small" id="timerStart">Start</button>
+        <button class="secondary small" id="timerReset">Reset</button>
       </div>
+    </div>
+
+    <div class="grid meta-grid" style="margin-top: 1rem;">
+      <div class="field">
+        <label for="rest1">Rest after round 1 (seconds)</label>
+        <input id="rest1" type="number" min="0" placeholder="60" />
+      </div>
+
+      <div class="field">
+        <label for="rest2">Rest after round 2 (seconds)</label>
+        <input id="rest2" type="number" min="0" placeholder="60" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="duration">Total workout time (minutes)</label>
+      <input id="duration" type="number" min="0" step="1" placeholder="30" />
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="field">
+      <label for="rpe">
+        Session RPE<br>
+        <span class="label-hint">(1–10)</span>
+      </label>
+      <input id="rpe" type="number" min="1" max="10" placeholder="7" />
+    </div>
+  </div>
+</div>
 
       <div class="card">
         <h2>Finish session</h2>
