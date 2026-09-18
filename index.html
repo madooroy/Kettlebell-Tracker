@@ -171,22 +171,19 @@
       margin-top: .3rem;
     }
 
-    /* Rest Timer: restore the original flexible layout */
+    /* Rest Timer: display, preset row, then action row */
     .timer {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: flex-end;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: .6rem;
+      align-items: center;
     }
 
-    .timer .field {
-      flex: 1 1 calc(50% - .3rem);
-      min-width: 0;
-    }
-
+    /* Countdown display: row 1 */
     .timer-readout {
-      flex: 0 0 auto;
-      min-width: 88px;
+      grid-column: 1 / -1;
+      text-align: center;
+      min-width: 0;
       font-size: 1.5rem;
       font-variant-numeric: tabular-nums;
       font-weight: 800;
@@ -194,8 +191,21 @@
       white-space: nowrap;
     }
 
-    .timer button {
-      flex: 0 0 auto;
+    /* Presets: row 2, three equal buttons */
+    .timer .preset {
+      width: 100%;
+    }
+
+    /* Timer actions: row 3, two equal buttons */
+    .timer-actions {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: .6rem;
+    }
+
+    .timer-actions button {
+      width: 100%;
     }
 
     .note {
@@ -320,11 +330,15 @@
         <p>Use after completing a full round.</p>
         <div class="timer">
           <span id="timerReadout" class="timer-readout">01:00</span>
+
           <button class="secondary small preset" data-seconds="60">60 sec</button>
           <button class="secondary small preset" data-seconds="75">75 sec</button>
           <button class="secondary small preset" data-seconds="90">90 sec</button>
-          <button class="primary small" id="timerStart">Start</button>
-          <button class="secondary small" id="timerReset">Reset</button>
+
+          <div class="timer-actions">
+            <button class="primary small" id="timerStart">Start</button>
+            <button class="secondary small" id="timerReset">Reset</button>
+          </div>
         </div>
         <div class="grid meta-grid" style="margin-top: 1rem;">
           <div class="field">
